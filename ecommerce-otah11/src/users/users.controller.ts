@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, UseGuards  } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './users.interface';
-import { AuthGuard } from 'src/auth/auth.guard';
+import { User } from './users.entity';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('users')
 export class UsersController {
@@ -20,29 +20,32 @@ export class UsersController {
     @UseGuards(AuthGuard)
 
     getUserById(@Param('id') id: string) : Promise<Omit<User, 'password'>> {
-        return this.usersService.getUserById(Number(id));
+        return this.usersService.getUserById(id);
         
     }
 
     @Post ()
-    @UseGuards(AuthGuard)
+    
 
-    createUser(@Body() user: Omit<User, 'id'>): Promise<number> {
+    createUser(@Body() user: Omit<User, 'id'>): Promise<User> {
         return this.usersService.createUser(user);
     }
 
     @Put (':id')
     @UseGuards(AuthGuard)
 
-    updateUser(@Param('id') id: string, @Body() user: Partial<User>): Promise<number> {
-        return this.usersService.updateUser(Number(id), user);
+    updateUser(@Param('id') id: string, @Body() user: Partial<User>): Promise<User> {
+        return this.usersService.updateUser((id), user);
     }
 
-    @Delete (':id')
+  
+    
+    @Delete(':id')
     @UseGuards(AuthGuard)
-
-    deleteUser(@Param('id') id: string): Promise<number> {
-        return this.usersService.deleteUser(Number(id));
+    async remove(@Param('id') id: string) {
+        const user = await this.usersService.deleteUser(id)
+        
+        return {message: "Usuario eliminado", user: user}
     }
 }
 

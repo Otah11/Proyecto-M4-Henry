@@ -1,19 +1,20 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthDto } from './auth.dto';
-import { User } from 'src/users/users.interface';
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { AuthService } from "./auth.service";
+import { AuthDto } from "./auth.dto";
+import { User } from "src/users/users.entity";
+
 
 @Controller('auth')
 export class AuthController {
-    constructor(private readonly authService: AuthService){}
+    constructor(private readonly authService: AuthService) {}
     @Get()
     getAuth(){
         return this.authService.getAuth();
     }
-    @Post('signin')
-     sigIn(@Body() credential: AuthDto): Promise<User | string> {
-        return this.authService.signIn(credential);
-    }
-    }
 
+    @Post("signin")
+    async signIn(@Body() credentials: AuthDto): Promise<User | string> {
+        return await this.authService.signIn(credentials);
+}
+}

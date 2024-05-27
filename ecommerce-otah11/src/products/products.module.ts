@@ -1,14 +1,15 @@
 /* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
-import { ProductService } from './products.service';
+import { ProductsService } from './products.service';
 import { ProductController } from './products.controller';
 import { ProductsRepository } from './products.repository';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Category } from 'src/category/category.entity';
+import { Product } from './products.entity';
 
 @Module({
-    imports: [],
+    imports: [TypeOrmModule.forFeature([Product, Category])],
     controllers: [ProductController],
-    providers: [ProductService, ProductsRepository]
+    providers: [ProductsService, ProductsRepository]
 })
-export class ProductModule {
-
-};
+export class ProductModule {};
