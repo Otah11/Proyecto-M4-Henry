@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./users.entity";
 import { Repository } from "typeorm";
@@ -29,9 +29,9 @@ export class UsersService {
        return userFound
     }
     async createUser(user: CreateUserDto): Promise<User> {
-        const userFound = await this.usersRepository.findOne({where: {email: user.email, password: user.password, name: user.name}});
+        const userFound = await this.usersRepository.findOne({where: {email: user.email}});
         if (userFound) {
-            throw new NotFoundException('User already exists');
+            throw new BadRequestException('User already exists');
         }
         const newUser = this.usersRepository.create(user);
         await this.usersRepository.save(newUser);
