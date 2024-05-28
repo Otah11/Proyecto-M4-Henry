@@ -1,4 +1,12 @@
-export interface OrderDto2 {
+import { IsNotEmpty, IsNumber, IsUUID } from "class-validator";
+
+export class OrderDto2 {
+    
+    @IsNotEmpty()
+    @IsUUID()
     id: string;
-    quantity: 1;
+    
+    @IsNotEmpty()
+    @IsNumber()
+    quantity: number;
 }

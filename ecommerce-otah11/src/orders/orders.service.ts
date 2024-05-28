@@ -5,7 +5,8 @@ import { Repository } from 'typeorm';
 import { Order } from "./orders.entity";
 import { Product } from "src/products/products.entity";
 import { OrderDetail } from "src/orderdetail/orderDetail.entity";
-import { OrderDto1 } from "./orders.dto1";
+//import { OrderDto1 } from "./orders.dto1";
+import { CreateOrderDto } from "./createOrder.dto";
 
 @Injectable()
 export class OrdersService {
@@ -17,7 +18,7 @@ export class OrdersService {
         @InjectRepository(OrderDetail) private readonly orderDetailRepository: Repository<OrderDetail>
     ) {}
 
-    async addOrder(data: OrderDto1) {
+    async addOrder(data: CreateOrderDto) {
         const updatedProduct = [];
         let totalPrice = 0;
 

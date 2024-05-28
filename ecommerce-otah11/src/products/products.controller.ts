@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import {  Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {  Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product } from './products.entity';
 import { ProductDto } from './products.dto';
@@ -21,7 +21,7 @@ export class ProductController {
     }
 
       @Get(':id')
-      async getProductsById(@Param('id') id: string): Promise<Product> {
+      async getProductsById(@Param('id',ParseUUIDPipe) id: string): Promise<Product> {
         return await this.productService.getProductsById(id);
       }
       @Post()
@@ -30,11 +30,11 @@ export class ProductController {
          
       }
       @Put(':id')
-      async updateProduct(@Param('id') id: string, @Body() product: ProductDto): Promise<Product> {
+      async updateProduct(@Param('id',ParseUUIDPipe) id: string, @Body() product: ProductDto): Promise<Product> {
         return await this.productService.updateProduct(id, product);
       }
       @Delete(':id')
-      async deleteProduct(@Param('id') id: string) {
+      async deleteProduct(@Param('id',ParseUUIDPipe) id: string) {
         const product =await this.productService.deleteProduct(id);
         return {message: "Producto eliminado", product: product};
       }

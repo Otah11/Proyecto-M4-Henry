@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { AuthDto } from "./auth.dto";
+import { LogginUserDto } from "./auth.dto";
 import { User } from "src/users/users.entity";
 
 
@@ -14,7 +14,7 @@ export class AuthController {
     }
 
     @Post("signin")
-    async signIn(@Body() credentials: AuthDto): Promise<User | string> {
+    async signIn(@Body() credentials: LogginUserDto): Promise<User | string> {
         return await this.authService.signIn(credentials);
 }
 }

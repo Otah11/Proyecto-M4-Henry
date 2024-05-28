@@ -9,6 +9,7 @@ export class Order {
     id: string = uuid();
 
     @ManyToOne(() => User, user => user.orders)
+    @JoinColumn({name: 'user_id'})
     user: User;
 
     @Column('date')

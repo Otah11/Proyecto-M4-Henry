@@ -1,13 +1,13 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseUUIDPipe, Post } from "@nestjs/common";
 import { OrdersService } from "./orders.service";
-import { OrderDto1 } from "./orders.dto1";
+import { CreateOrderDto } from "./createOrder.dto";
 
 @Controller('orders')
 export class OrdersController {
     constructor(private readonly serviceRepository: OrdersService) {}
     
     @Post()
-    async addOrder(@Body()data: OrderDto1) {
+    async addOrder(@Body()data: CreateOrderDto) {
         return await this.serviceRepository.addOrder(data);
     }
 
@@ -17,7 +17,7 @@ export class OrdersController {
         return await this.serviceRepository.getAllOrders()
     }
     @Get(":id")
-  async getOrderById(@Param("id") id: string) {
+  async getOrderById(@Param("id", ParseUUIDPipe) id: string) {
    
     return await this.serviceRepository.getOrderById(id);
   }

@@ -1,6 +1,6 @@
 /*  eslint-disable prettier/prettier */
 import { Injectable } from "@nestjs/common";
-import { AuthDto } from "./auth.dto";
+import { LogginUserDto } from "./auth.dto";
 import { User } from "src/users/users.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -12,7 +12,7 @@ export class AuthService {
         return "Auth"
     }
 
-    async signIn(credentials: AuthDto): Promise<User | string> {
+    async signIn(credentials: LogginUserDto): Promise<User | string> {
         if (!credentials.email || !credentials.password) {
             return "Faltan credenciales..."
         }

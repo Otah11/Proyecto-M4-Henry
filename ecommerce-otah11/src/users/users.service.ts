@@ -4,6 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./users.entity";
 import { Repository } from "typeorm";
 import { OrdersService } from '../orders/orders.service';
+import { CreateUserDto } from "./createUser.dto";
 
 @Injectable()
 export class UsersService {
@@ -27,7 +28,11 @@ export class UsersService {
     });
        return userFound
     }
-    async createUser(user: Omit<User, 'id'>): Promise<User> {
+    async createUser(user: CreateUserDto): Promise<User> {
+        const userFound = await this.usersRepository.findOne({where: {email: user.email, password: user.password, name: user.name}});
+        if (userFound) {
+            throw new NotFoundException('User already exists');
+        }
         const newUser = this.usersRepository.create(user);
         await this.usersRepository.save(newUser);
         return newUser;

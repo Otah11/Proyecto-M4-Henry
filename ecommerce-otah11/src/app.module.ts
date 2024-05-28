@@ -14,8 +14,12 @@ import { OrdersModule } from './orders/orders.module';
 @Global()
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, load: [typeOrmConfig]}),
-    TypeOrmModule.forRootAsync({inject: [ConfigService], useFactory: (configService: ConfigService) => configService.get('typeorm') }),
+    ConfigModule.forRoot({ 
+      isGlobal: true, load: [typeOrmConfig]
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService], useFactory: (configService: ConfigService) => configService.get('typeorm') 
+    }),
     UserModule, ProductModule, AuthModule, CategoryModule, OrdersModule, ],
   controllers: [AppController],
   providers: [AppService],

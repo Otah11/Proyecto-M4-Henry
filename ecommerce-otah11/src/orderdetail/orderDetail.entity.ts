@@ -12,10 +12,20 @@ export class OrderDetail {
     price: number;
 
     @OneToOne(() => Order, order => order.orderDetail)
-    @JoinColumn()
+    @JoinColumn({name: 'order_id'})
     order: Order;
 
     @ManyToMany(() => Product, product => product.orderDetails)
-    @JoinTable()
+    @JoinTable({
+        name: 'order_details_products',
+        joinColumn: {
+            name: 'product_id',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'order_id',
+            referencedColumnName: 'id'
+        }
+    })
     products: Product[];
 }
