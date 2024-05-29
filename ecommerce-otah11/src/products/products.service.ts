@@ -74,7 +74,7 @@ async createProduct(product: ProductDto): Promise<Product> {
     return newProduct    
     }
 
-async updateProduct(id: string, product:ProductDto): Promise<Product> {
+async updateProduct(id: string, product:any): Promise<Product> {
     const productToUpdate = await this.productRepository.findOne({ where: {id: id}, relations: { category: true }});
     if(!productToUpdate) {
         throw new NotFoundException('Product not found');
