@@ -1,9 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, UseGuards  } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Put, Query, UseGuards  } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './users.entity';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { CreateUserDto } from './createUser.dto';
 
 @Controller('users')
 export class UsersController {
@@ -25,10 +24,7 @@ export class UsersController {
         
     }
 
-    @Post ()
-    createUser(@Body() user: CreateUserDto): Promise<User> {
-        return this.usersService.createUser(user);
-    }
+   
 
     @Put (':id')
     @UseGuards(AuthGuard)

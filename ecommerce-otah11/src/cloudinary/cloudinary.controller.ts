@@ -9,11 +9,13 @@ import {
     Post, 
     // Put,  
     UploadedFile, 
+    UseGuards, 
     UseInterceptors, 
     forwardRef} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from './cloudinary.service';
 import { ProductsService } from 'src/products/products.service';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 
 @Controller('files')
@@ -24,6 +26,7 @@ export class CloudinaryController {
     ) {}
 
     @Post('uploadImage/:id')
+    @UseGuards(AuthGuard)
     @UseInterceptors(FileInterceptor('file'))
     async uploadImage(
         @Param('id', ParseUUIDPipe) id: string,

@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
-import {  Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query } from '@nestjs/common';
+import {  Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product } from './products.entity';
 import { ProductDto } from './products.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('products')
 export class ProductController {
@@ -13,6 +14,7 @@ export class ProductController {
         return 'Products seeded';
     }
     @Get()
+    
     async getAllProducts(
       @Query('limit') limit: number = 5,
       @Query('page') page: number = 1,
@@ -30,6 +32,7 @@ export class ProductController {
          
       }
       @Put(':id')
+      @UseGuards(AuthGuard)
       async updateProduct(@Param('id',ParseUUIDPipe) id: string, @Body() product: ProductDto): Promise<Product> {
         return await this.productService.updateProduct(id, product);
       }

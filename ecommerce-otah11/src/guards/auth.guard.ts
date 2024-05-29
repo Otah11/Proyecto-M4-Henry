@@ -1,24 +1,27 @@
-import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
-import { Request } from "express";
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { Observable } from "rxjs";
+import {config as dotenvConfig} from "dotenv"
+import { JwtService } from "@nestjs/jwt";
 
-function authGuard(req: Request, ) {
-    const authHeader = req.headers['authorization'];
-    if (!authHeader) {
-        return false;
-    }
-    const authParts = authHeader.split(':');
-    if (authParts.length !== 3 || authParts[0] !== 'Basic') {
-        return false;
-    }
-    return true;
+dotenvConfig({path: '.development.env'})
 
-}
 
 @Injectable()
 export class AuthGuard implements CanActivate {
+    constructor(private readonly jwtService: JwtService) {}
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const req = context.switchToHttp().getRequest();
-        return authGuard(req)
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            throw new UnauthorizedException('Invalid token');
+        }
+        const token = authHeader.split(' ')[1];
+        try {
+            const decoded = this.jwtService.verify(token);
+            req.user = decoded;
+            return true;
+        } catch (error) {
+            throw new UnauthorizedException('Invalid token');
+        }
     }
 }

@@ -28,6 +28,13 @@ import {
       @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&_\-]).{8,15}$/, { message: 'password too weak' })
       @IsString()
       password: string
+
+      @IsNotEmpty()
+      @MinLength(8)
+      @MaxLength(15)
+      @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&_\-]).{8,15}$/, { message: 'password too weak' })
+      @IsString()
+      confirmPassword: string
   
       @IsNotEmpty()
       @MinLength(3)
