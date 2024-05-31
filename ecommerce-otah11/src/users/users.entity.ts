@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Order } from '../orders/orders.entity';
 import { v4 as uuid } from 'uuid';
+import { Role } from '../roles/role.enum';
 
 @Entity({name: 'users'})
 export class User {
@@ -27,6 +28,9 @@ export class User {
 
     @Column({ length: 50, nullable: true })
     city: string;
+
+    @Column ({default: Role.USER})
+    roles: Role;
 
     @OneToMany(() => Order, order => order.user)
     orders: Order[];

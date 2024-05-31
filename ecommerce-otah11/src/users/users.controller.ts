@@ -3,19 +3,24 @@ import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Put, Que
 import { UsersService } from './users.service';
 import { User } from './users.entity';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/guards/admin.guard';
+import { Roles } from 'src/roles/role.decorator';
+import { Role } from 'src/roles/role.enum';
 
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
     @Get()
     @HttpCode(200)
-    @UseGuards(AuthGuard)
+    @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard, RolesGuard)
     getUsers(@Query('page') page ='1', @Query('limit') limit = '5'): Promise<Omit<User, 'password'>[]> {
         const pageNumber = parseInt(page, 10);
         const limitNumber = parseInt(limit, 10);
         return this.usersService.getUsers(pageNumber, limitNumber);
     }
     
+
     @Get(':id')
     @UseGuards(AuthGuard)
 
@@ -42,30 +47,3 @@ export class UsersController {
         return {message: "Usuario eliminado", user: user}
     }
 }
-
-
-// @Get ('profile')
-// getUserProfile() {
-//     return "Este Endpoint muestra un perfil de usuario";
-// }
-// @Get('profile/images')
-// getUserProfileImages() {
-//     return "Este Endpoint muestra las imagenes de perfil de usuario";
-// }
-
-// @HttpCode(418)
-// @Get ('coffee')
-// getCoffee() {
-//     return "Este Endpoint no le sale el cafe porque es una tetera (es una prueba que seguramente se quitara, pero quiero tenerlo hecho)";
-// }
-
-// @Get('message')
-// getMessage(@Res()response: Response) {
-//     response.status(200).send('Este es un mensaje de prueba');
-// } //asi accedo al response de express
-
-// @Get('request')
-// getRequest(@Res()request: Request) {
-//     console.log(request);
-//     return "Este Endpoint logea un request";
-// }

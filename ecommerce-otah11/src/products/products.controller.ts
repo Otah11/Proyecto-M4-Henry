@@ -4,6 +4,9 @@ import { ProductsService } from './products.service';
 import { Product } from './products.entity';
 import { ProductDto } from './products.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/roles/role.decorator';
+import { Role } from 'src/roles/role.enum';
+import { RolesGuard } from 'src/guards/admin.guard';
 
 @Controller('products')
 export class ProductController {
@@ -32,7 +35,8 @@ export class ProductController {
          
       }
       @Put(':id')
-      @UseGuards(AuthGuard)
+      @Roles(Role.ADMIN)
+      @UseGuards(AuthGuard, RolesGuard)
       async updateProduct(@Param('id',ParseUUIDPipe) id: string, @Body() product: ProductDto): Promise<Product> {
         return await this.productService.updateProduct(id, product);
       }
@@ -42,32 +46,5 @@ export class ProductController {
         return {message: "Producto eliminado", product: product};
       }
 
-    
-    // @Get()    
-    // getProducts() {
-    //     return this.productService.getProducts();
-    // }
-    // @Get(':id')
-    // getProductsById(@Param('id') id: string) {
-    //     return this.productService.getProductsById(Number(id));
-    // }
-    // @Post()
-    // @UseGuards(AuthGuard)
-
-    // createProduct(@Body() product: Omit<Product, 'id'>): Promise<number> {
-    //     return this.productService.createProduct(product);
-    // }
-    // @Put(':id')
-    // @UseGuards(AuthGuard)
-    // updateProduct(@Param('id') id: string, @Body() product: Partial<Product>): Promise<number> {
-    //     return this.productService.updateProduct(Number(id), product);
-    // }
-
-    // @Delete(':id')
-    // @UseGuards(AuthGuard)
-
-    // deleteProduct(@Param('id') id: string): Promise<number> {
-    //     return this.productService.deleteProduct(Number(id));
-    // }
 
 }

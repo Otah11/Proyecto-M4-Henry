@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { Order } from "./orders.entity";
 import { Product } from "src/products/products.entity";
 import { OrderDetail } from "src/orderdetail/orderDetail.entity";
-//import { OrderDto1 } from "./orders.dto1";
 import { CreateOrderDto } from "./createOrder.dto";
 
 @Injectable()
