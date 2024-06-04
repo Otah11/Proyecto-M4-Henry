@@ -1,10 +1,10 @@
 /*  eslint-disable prettier/prettier */
 import { BadRequestException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { LoginUserDto } from "./auth.dto";
-import { User } from "src/users/users.entity";
+import { User } from "../users/users.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { CreateUserDto } from "src/users/createUser.dto";
+import { CreateUserDto } from "../users/createUser.dto";
 import * as bcrypt from 'bcrypt';
 import { JwtService } from "@nestjs/jwt";
 
@@ -15,7 +15,8 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) {}
 
-    async signUp(user: CreateUserDto): Promise<Omit<User, 'password'>> {
+    async signUp(user: CreateUserDto): Promise<Partial<User>> {
+
         if (user.password !== user.confirmPassword) {
             throw new BadRequestException('Passwords do not match');
         }
@@ -33,7 +34,7 @@ export class AuthService {
         const newUser = this.userRepository.create({ ...user, password: hashedPassword });
         await this.userRepository.save(newUser);
 
-        const { password, ...userWithoutPassword } = newUser;
+        const { roles, password, ...userWithoutPassword } = newUser;
         return userWithoutPassword;
     }
 

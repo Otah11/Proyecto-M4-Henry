@@ -9,15 +9,19 @@ import {
     Post, 
     // Put,  
     UploadedFile, 
-    UseGuards, 
+    // UseGuards, 
     UseInterceptors, 
     forwardRef} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from './cloudinary.service';
-import { ProductsService } from 'src/products/products.service';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { ProductsService } from '../products/products.service';
+// import { AuthGuard } from '../guards/auth.guard';
+// import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+// import { RolesGuard } from 'src/guards/admin.guard';
+// import { Roles } from '../roles/role.decorator';
+// import { Role } from '../roles/role.enum';
 
-
+// @ApiTags("Files")
 @Controller('files')
 export class CloudinaryController {
     constructor(private readonly cloudinaryService: CloudinaryService,
@@ -26,7 +30,9 @@ export class CloudinaryController {
     ) {}
 
     @Post('uploadImage/:id')
-    @UseGuards(AuthGuard)
+    // @ApiBearerAuth()
+    // @Roles(Role.ADMIN)
+    // @UseGuards(AuthGuard, RolesGuard)
     @UseInterceptors(FileInterceptor('file'))
     async uploadImage(
         @Param('id', ParseUUIDPipe) id: string,

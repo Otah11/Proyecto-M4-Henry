@@ -6,6 +6,7 @@ import { categories } from "src/utils/category";
 
 @Injectable()
 export class CategoryService {
+    
 
     constructor(@InjectRepository(Category) private readonly categoryRepository: Repository<Category>) {}
     async seederCategory():Promise<void>{
@@ -17,5 +18,17 @@ export class CategoryService {
     }
     async getAllCategories() {
         return await this.categoryRepository.find();
+    }
+
+    async addCategory(categories: Category[]) {
+        const newCategories = []
+        for (const category of categories) {
+            const existingCategories = await this.categoryRepository.findOne({ where: { name: category.name } })
+            if(!existingCategories) {
+                newCategories.push(await this.categoryRepository.save(category))   
+            }
+
+        }
+        return newCategories
     }
 }

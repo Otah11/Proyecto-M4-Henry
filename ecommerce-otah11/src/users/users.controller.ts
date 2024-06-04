@@ -2,15 +2,18 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Put, Query, UseGuards  } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './users.entity';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { RolesGuard } from 'src/guards/admin.guard';
-import { Roles } from 'src/roles/role.decorator';
-import { Role } from 'src/roles/role.enum';
+import { AuthGuard } from '../guards/auth.guard';
+import { RolesGuard } from '../guards/admin.guard';
+import { Roles } from '../roles/role.decorator';
+import { Role } from '../roles/role.enum';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags("Users")
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
     @Get()
+    @ApiBearerAuth()
     @HttpCode(200)
     @Roles(Role.ADMIN)
     @UseGuards(AuthGuard, RolesGuard)
@@ -22,6 +25,7 @@ export class UsersController {
     
 
     @Get(':id')
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
 
     getUserById(@Param('id',ParseUUIDPipe) id: string) : Promise<Omit<User, 'password'>> {
@@ -32,6 +36,7 @@ export class UsersController {
    
 
     @Put (':id')
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     updateUser(@Param('id',ParseUUIDPipe) id: string, @Body() user: Partial<User>): Promise<User> {
         return this.usersService.updateUser((id), user);
@@ -40,6 +45,7 @@ export class UsersController {
   
     
     @Delete(':id')
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     async remove(@Param('id',ParseUUIDPipe) id: string) {
         const user = await this.usersService.deleteUser(id)

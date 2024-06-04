@@ -3,11 +3,13 @@ import {  Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query,
 import { ProductsService } from './products.service';
 import { Product } from './products.entity';
 import { ProductDto } from './products.dto';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { Roles } from 'src/roles/role.decorator';
-import { Role } from 'src/roles/role.enum';
-import { RolesGuard } from 'src/guards/admin.guard';
+import { AuthGuard } from '../guards/auth.guard';
+import { Roles } from '../roles/role.decorator';
+import { Role } from '../roles/role.enum';
+import { RolesGuard } from '../guards/admin.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags("Products")
 @Controller('products')
 export class ProductController {
     constructor(private readonly productService: ProductsService) {}
@@ -30,17 +32,24 @@ export class ProductController {
         return await this.productService.getProductsById(id);
       }
       @Post()
+      @ApiBearerAuth()
+      @Roles(Role.ADMIN)
+      @UseGuards(AuthGuard, RolesGuard)
       async createProduct(@Body() product: ProductDto): Promise<Product> {
        return  await this.productService.createProduct(product);
          
       }
       @Put(':id')
+      @ApiBearerAuth()
       @Roles(Role.ADMIN)
       @UseGuards(AuthGuard, RolesGuard)
       async updateProduct(@Param('id',ParseUUIDPipe) id: string, @Body() product: ProductDto): Promise<Product> {
         return await this.productService.updateProduct(id, product);
       }
       @Delete(':id')
+      @ApiBearerAuth()
+      @Roles(Role.ADMIN)
+      @UseGuards(AuthGuard, RolesGuard)
       async deleteProduct(@Param('id',ParseUUIDPipe) id: string) {
         const product =await this.productService.deleteProduct(id);
         return {message: "Producto eliminado", product: product};

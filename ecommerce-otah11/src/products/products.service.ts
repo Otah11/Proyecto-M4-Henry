@@ -3,8 +3,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './products.entity';
 import { Repository } from 'typeorm';
-import { Category } from 'src/category/category.entity';
-import { products } from 'src/utils/products';
+import { Category } from '../category/category.entity';
+import { products } from '../utils/products';
 import { ProductDto } from './products.dto';
 
 @Injectable()

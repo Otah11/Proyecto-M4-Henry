@@ -3,12 +3,11 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./users.entity";
 import { Repository } from "typeorm";
-import { OrdersService } from '../orders/orders.service';
 
 @Injectable()
 export class UsersService {
     
-    constructor(@InjectRepository(User) private readonly usersRepository: Repository<User>, private readonly orderService: OrdersService
+    constructor(@InjectRepository(User) private readonly usersRepository: Repository<User>,
         ) {}
 
     async getUsers(pageNumber: number, limitNumber: number): Promise<User[]> {
@@ -41,9 +40,12 @@ export class UsersService {
         if(!foundUser){
             throw new NotFoundException('User not found');
         }
-        await this.orderService.deleteOrdersByUserId(id);
+        //await this.orderService.deleteOrdersByUserId(id);
 
         await this.usersRepository.delete(foundUser);
         return foundUser
+
+        
     }
+
 }

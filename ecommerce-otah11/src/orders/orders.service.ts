@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "src/users/users.entity";
+import { User } from "../users/users.entity";
 import { Repository } from 'typeorm';
 import { Order } from "./orders.entity";
-import { Product } from "src/products/products.entity";
-import { OrderDetail } from "src/orderdetail/orderDetail.entity";
+import { Product } from "../products/products.entity";
+import { OrderDetail } from "../orderdetail/orderDetail.entity";
 import { CreateOrderDto } from "./createOrder.dto";
 
 @Injectable()
@@ -69,8 +69,8 @@ export class OrdersService {
         return await this.orderRepository.findOne({ where: { id: id }, relations: { orderDetail: true } });
     }
 
-    async deleteOrdersByUserId(userId: string) {
-         return await this.orderRepository.delete({ user: { id: userId } });
-    }
+    // async deleteOrdersByUserId(userId: string) {
+    //      return await this.orderRepository.delete({ user: { id: userId } });
+    // }
 }
 
