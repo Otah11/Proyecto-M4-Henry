@@ -9,19 +9,20 @@ import {
     Post, 
     // Put,  
     UploadedFile, 
-    // UseGuards, 
+    UseGuards, 
     UseInterceptors, 
     forwardRef} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from './cloudinary.service';
 import { ProductsService } from '../products/products.service';
-// import { AuthGuard } from '../guards/auth.guard';
-// import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-// import { RolesGuard } from 'src/guards/admin.guard';
-// import { Roles } from '../roles/role.decorator';
-// import { Role } from '../roles/role.enum';
+import { ApiBody, ApiConsumes, ApiParam } from '@nestjs/swagger';
+import { AuthGuard } from '../guards/auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { RolesGuard } from 'src/guards/admin.guard';
+import { Roles } from '../roles/role.decorator';
+import { Role } from '../roles/role.enum';
 
-// @ApiTags("Files")
+@ApiTags("Files")
 @Controller('files')
 export class CloudinaryController {
     constructor(private readonly cloudinaryService: CloudinaryService,
@@ -30,9 +31,23 @@ export class CloudinaryController {
     ) {}
 
     @Post('uploadImage/:id')
-    // @ApiBearerAuth()
-    // @Roles(Role.ADMIN)
-    // @UseGuards(AuthGuard, RolesGuard)
+    @ApiBearerAuth()
+    @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard, RolesGuard)
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+          type: 'object',
+          properties: {
+            file: {
+              type: 'string',
+              format: 'binary',
+            }, }, },} )
+    @ApiParam({
+        name: 'id',
+        description: 'Product ID',
+        type: 'string',
+    })
     @UseInterceptors(FileInterceptor('file'))
     async uploadImage(
         @Param('id', ParseUUIDPipe) id: string,
