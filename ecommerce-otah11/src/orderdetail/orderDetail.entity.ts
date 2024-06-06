@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToOne, JoinTable, JoinColumn } from 'typeorm';
-import { Order } from '../orders/orders.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
 import { Product } from '../products/products.entity';
 import { v4 as uuid } from 'uuid';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
@@ -17,11 +16,9 @@ export class OrderDetail {
     })
     price: number;
 
-    @OneToOne(() => Order, order => order.orderDetail)
-    @JoinColumn({name: 'order_id'})
-    order: Order;
 
-    @ManyToMany(() => Product, product => product.orderDetails)
+
+    @ManyToMany(() => Product, product => product.orderDetails, {onDelete :'SET NULL'})
     @JoinTable({
         name: 'order_details_products',
         joinColumn: {

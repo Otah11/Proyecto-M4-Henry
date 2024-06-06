@@ -7,7 +7,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { Roles } from '../roles/role.decorator';
 import { Role } from '../roles/role.enum';
 import { RolesGuard } from '../guards/admin.guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("Products")
 @Controller('products')
@@ -18,8 +18,8 @@ export class ProductController {
         await this.productService.seedProducts();
         return 'Products seeded';
     }
+
     @Get()
-    
     async getAllProducts(
       @Query('limit') limit: number = 5,
       @Query('page') page: number = 1,
@@ -41,9 +41,10 @@ export class ProductController {
       }
       @Put(':id')
       @ApiBearerAuth()
+      @ApiBody({type: Object,})
       @Roles(Role.ADMIN)
       @UseGuards(AuthGuard, RolesGuard)
-      async updateProduct(@Param('id',ParseUUIDPipe) id: string, @Body() product: ProductDto): Promise<Product> {
+      async updateProduct(@Param('id',ParseUUIDPipe) id: string, @Body() product: Partial<ProductDto>): Promise<Product> {
         return await this.productService.updateProduct(id, product);
       }
       @Delete(':id')

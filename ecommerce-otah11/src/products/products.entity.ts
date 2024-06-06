@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from 'typeorm';
 import { Category } from '../category/category.entity';
 import { OrderDetail } from '../orderdetail/orderDetail.entity';
 import { v4 as uuid } from 'uuid';
@@ -46,9 +46,9 @@ export class Product {
     imgUrl: string;
 
     @ManyToOne(() => Category, category => category.products)
-    category: Category|Category["id"];
+    category: Category|Category["id"]; //preguntar
 
     @ManyToMany(() => OrderDetail, orderDetail => orderDetail.products)
-    @JoinTable()
+    
     orderDetails: OrderDetail[];
 }

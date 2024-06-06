@@ -6,7 +6,7 @@ import { AuthGuard } from '../guards/auth.guard';
 import { RolesGuard } from '../guards/admin.guard';
 import { Roles } from '../roles/role.decorator';
 import { Role } from '../roles/role.enum';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("Users")
 @Controller('users')
@@ -37,6 +37,7 @@ export class UsersController {
 
     @Put (':id')
     @ApiBearerAuth()
+    @ApiBody({type: Object})
     @UseGuards(AuthGuard)
     updateUser(@Param('id',ParseUUIDPipe) id: string, @Body() user: Partial<User>): Promise<User> {
         return this.usersService.updateUser((id), user);

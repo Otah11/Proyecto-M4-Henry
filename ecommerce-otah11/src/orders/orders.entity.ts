@@ -21,7 +21,7 @@ export class Order {
     })
     date: Date;
 
-    @OneToOne(() => OrderDetail, orderDetail => orderDetail.order)
+    @OneToOne(() => OrderDetail)
     @JoinColumn()
     orderDetail: OrderDetail;
 }

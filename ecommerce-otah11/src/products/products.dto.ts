@@ -34,7 +34,7 @@ export class ProductDto {
     @IsNumber()
     @ApiProperty({
         description: 'Precio del Producto',
-        example: '$4000,00',
+        example: 4000,
     })
     price: number;
     
@@ -49,7 +49,6 @@ export class ProductDto {
     @IsNotEmpty()
     @IsString()
     @MinLength(3)
-    @MaxLength(20)
     @ApiProperty({
         description: 'Imagen del Producto',
         example: 'www.google.com/imagen.jpg',
