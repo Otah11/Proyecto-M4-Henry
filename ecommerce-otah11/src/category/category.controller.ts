@@ -30,9 +30,9 @@ export class CategoryController {
     }
 
     @Post('seeder')
-    async seederCategory() {
-        await this.categoryService.seederCategory()
-        return 'todo ok'
+    async seederCategory():Promise<Category[]> {
+         
+        return await this.categoryService.seederCategory()
     }
 }
 

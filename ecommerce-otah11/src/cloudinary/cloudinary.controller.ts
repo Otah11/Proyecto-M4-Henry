@@ -14,20 +14,20 @@ import {
     forwardRef} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CloudinaryService } from './cloudinary.service';
-import { ProductsService } from '../products/products.service';
 import { ApiBody, ApiConsumes, ApiParam } from '@nestjs/swagger';
 import { AuthGuard } from '../guards/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/guards/admin.guard';
 import { Roles } from '../roles/role.decorator';
 import { Role } from '../roles/role.enum';
+import { ProductsRpository } from 'src/products/products.repository';
 
 @ApiTags("Files")
 @Controller('files')
 export class CloudinaryController {
     constructor(private readonly cloudinaryService: CloudinaryService,
-        @Inject(forwardRef(()=> ProductsService)) 
-        private readonly productService: ProductsService
+        @Inject(forwardRef(()=> ProductsRpository)) 
+        private readonly productsRepository: ProductsRpository
     ) {}
 
     @Post('uploadImage/:id')
@@ -64,8 +64,8 @@ export class CloudinaryController {
         
     }))file: Express.Multer.File
     ) {
-         await this.productService.getProductsById(id);
+         await this.productsRepository.getProductsById(id);
          const image = await this.cloudinaryService.uploadImage(file);
-         return await this.productService.updateProduct(id, {imgUrl: image.url});
+         return await this.productsRepository.updateProduct(id, {imgUrl: image.url});
     }
 }

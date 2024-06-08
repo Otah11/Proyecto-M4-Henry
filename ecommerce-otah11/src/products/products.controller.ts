@@ -13,32 +13,29 @@ import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 @Controller('products')
 export class ProductController {
     constructor(private readonly productService: ProductsService) {}
-    @Post('seeder')
-    async seedProducts(){
-        await this.productService.seedProducts();
-        return 'Products seeded';
-    }
+      @Post('seeder')
+      async seedProducts():Promise<Product[]>{
+      return await this.productService.seedProducts();       
+      }
 
-    @Get()
-    async getAllProducts(
-      @Query('limit') limit: number = 5,
-      @Query('page') page: number = 1,
-    ) {
+      @Get()
+      async getAllProducts(@Query('limit') limit: number = 5, @Query('page') page: number = 1,) {
       return await this.productService.getAllProducts(page, limit);
-    }
+      }
 
       @Get(':id')
       async getProductsById(@Param('id',ParseUUIDPipe) id: string): Promise<Product> {
         return await this.productService.getProductsById(id);
       }
+
       @Post()
       @ApiBearerAuth()
       @Roles(Role.ADMIN)
       @UseGuards(AuthGuard, RolesGuard)
       async createProduct(@Body() product: ProductDto): Promise<Product> {
-       return  await this.productService.createProduct(product);
-         
+        return  await this.productService.createProduct(product);      
       }
+
       @Put(':id')
       @ApiBearerAuth()
       @ApiBody({type: Object,})
@@ -47,14 +44,13 @@ export class ProductController {
       async updateProduct(@Param('id',ParseUUIDPipe) id: string, @Body() product: Partial<ProductDto>): Promise<Product> {
         return await this.productService.updateProduct(id, product);
       }
+
       @Delete(':id')
       @ApiBearerAuth()
       @Roles(Role.ADMIN)
       @UseGuards(AuthGuard, RolesGuard)
       async deleteProduct(@Param('id',ParseUUIDPipe) id: string) {
-        const product =await this.productService.deleteProduct(id);
-        return {message: "Producto eliminado", product: product};
+        return await this.productService.deleteProduct(id);        
       }
-
-
 }
+

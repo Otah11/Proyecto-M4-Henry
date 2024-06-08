@@ -6,34 +6,29 @@ import { AuthGuard } from '../guards/auth.guard';
 import { RolesGuard } from '../guards/admin.guard';
 import { Roles } from '../roles/role.decorator';
 import { Role } from '../roles/role.enum';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags("Users")
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
+
     @Get()
     @ApiBearerAuth()
     @HttpCode(200)
+    @ApiOperation({ summary: 'Get all users', description: 'Recibe por query la pagina y el limite de items por pagina y retorna un array de users' })
     @Roles(Role.ADMIN)
     @UseGuards(AuthGuard, RolesGuard)
-    getUsers(@Query('page') page ='1', @Query('limit') limit = '5'): Promise<Omit<User, 'password'>[]> {
-        const pageNumber = parseInt(page, 10);
-        const limitNumber = parseInt(limit, 10);
-        return this.usersService.getUsers(pageNumber, limitNumber);
+    getUsers(@Query('page') page: number = 1, @Query('limit') limit: number = 5): Promise<Omit<User, 'password'>[]> {
+        return this.usersService.getUsers(page, limit);
     }
     
-
     @Get(':id')
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
-
     getUserById(@Param('id',ParseUUIDPipe) id: string) : Promise<Omit<User, 'password'>> {
-        return this.usersService.getUserById(id);
-        
+        return this.usersService.getUserById(id);   
     }
-
-   
 
     @Put (':id')
     @ApiBearerAuth()
@@ -43,14 +38,10 @@ export class UsersController {
         return this.usersService.updateUser((id), user);
     }
 
-  
-    
     @Delete(':id')
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
-    async remove(@Param('id',ParseUUIDPipe) id: string) {
-        const user = await this.usersService.deleteUser(id)
-        
-        return {message: "Usuario eliminado", user: user}
+    async deleteUser(@Param('id',ParseUUIDPipe) id: string) {
+        return  await this.usersService.deleteUser(id)
     }
 }

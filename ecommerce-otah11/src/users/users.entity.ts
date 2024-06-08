@@ -3,6 +3,7 @@ import { Order } from '../orders/orders.entity';
 import { v4 as uuid } from 'uuid';
 import { Role } from '../roles/role.enum';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
 
 @Entity({name: 'users'})
 export class User {
@@ -60,6 +61,7 @@ export class User {
     city: string;
 
     @Column ({default: Role.USER})
+    @Exclude()
     @ApiProperty({
         description: 'El rol del Usuario',
         example: 'USER o ADMIN'

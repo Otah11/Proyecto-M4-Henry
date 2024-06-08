@@ -1,34 +1,19 @@
 import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
 import { Category } from "./category.entity";
-import { Repository } from "typeorm";
-import { categories } from "src/utils/category";
+import { CategoryRepository } from "./category.repository";
 
 @Injectable()
 export class CategoryService {
+    constructor(private readonly categoryRepository: CategoryRepository) {}
     
-
-    constructor(@InjectRepository(Category) private readonly categoryRepository: Repository<Category>) {}
-    async seederCategory():Promise<void>{
-        const arrayOfCategories = await this.categoryRepository.find();
-        if(arrayOfCategories.length === 0){
-            for (const i of categories ){
-                await this.categoryRepository.save(i);}
-        }
+    async seederCategory():Promise<Category[]>{
+        return await this.categoryRepository.seederCategory()
     }
     async getAllCategories() {
-        return await this.categoryRepository.find();
+        return await this.categoryRepository.getAllCategories()
     }
 
     async addCategory(categories: Category[]) {
-        const newCategories = []
-        for (const category of categories) {
-            const existingCategories = await this.categoryRepository.findOne({ where: { name: category.name } })
-            if(!existingCategories) {
-                newCategories.push(await this.categoryRepository.save(category))   
-            }
-
-        }
-        return newCategories
+        return await this.categoryRepository.addCategory(categories)
     }
 }

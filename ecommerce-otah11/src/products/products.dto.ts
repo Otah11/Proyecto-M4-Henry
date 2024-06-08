@@ -22,8 +22,6 @@ export class ProductDto {
     
     @IsNotEmpty()
     @IsString()
-    @MinLength(3)
-    @MaxLength(20)
     @ApiProperty({
         description: 'Descripcion del Producto',
         example: 'Computadora portatil',
@@ -48,7 +46,6 @@ export class ProductDto {
     
     @IsNotEmpty()
     @IsString()
-    @MinLength(3)
     @ApiProperty({
         description: 'Imagen del Producto',
         example: 'www.google.com/imagen.jpg',
@@ -57,8 +54,6 @@ export class ProductDto {
     
     @IsNotEmpty()
     @IsString()
-    @MinLength(3)
-    @MaxLength(20)
     @ApiProperty({
         description: 'Categoria del Producto',
         example: 'Computadoras',

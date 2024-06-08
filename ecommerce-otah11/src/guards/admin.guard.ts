@@ -23,7 +23,6 @@ export class RolesGuard implements CanActivate {
         // Obtener la solicitud y el usuario
         const request = context.switchToHttp().getRequest();
         const user = request.user;
-        console.log(user);
 
         // Validar el rol del usuario
         const hasRole = () => {
@@ -31,7 +30,6 @@ export class RolesGuard implements CanActivate {
         };
 
         const valid = user && user.roles && hasRole();
-        console.log(valid);
 
         if (!valid) throw new UnauthorizedException("No tiene permisos para acceder a esta ruta");
         return true;

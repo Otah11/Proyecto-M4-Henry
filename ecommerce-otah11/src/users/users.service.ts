@@ -1,51 +1,27 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
+import { Injectable } from "@nestjs/common";
 import { User } from "./users.entity";
-import { Repository } from "typeorm";
+import { UserRepository } from "./users.repository";
 
 @Injectable()
 export class UsersService {
     
-    constructor(@InjectRepository(User) private readonly usersRepository: Repository<User>,
-        ) {}
+    constructor(private readonly userRepository: UserRepository) {}
 
-    async getUsers(pageNumber: number, limitNumber: number): Promise<User[]> {
-        const [users] = await this.usersRepository.findAndCount({ 
-            skip: (pageNumber - 1) * limitNumber,
-            take: limitNumber,
-            relations: { orders: true},
-            
-         });
-        return users;
-    }
-    async getUserById(id: string): Promise<User> {
-       const userFound= await this.usersRepository.findOne({where:{id: id}, 
-        relations: { orders: true}, 
-        
-    });
-       return userFound
+    async getUsers(page: number, limit: number): Promise<User[]> {
+        return await this.userRepository.getUsers(page, limit);
     }
 
-      
-    
+    async getUserById(id: string): Promise<User>{
+        return await this.userRepository.getUserById(id);
+    }
+
     async updateUser(id: string, user: Partial<User>) : Promise<User> {
-        const foundUser = await this.usersRepository.findOne({where:{id: id}});
-        Object.assign(foundUser, user);
-        await this.usersRepository.save(foundUser);
-        return foundUser;
-    }
-    async deleteUser(id: string): Promise<User> {
-        const foundUser = await this.usersRepository.findOne({where:{id: id}});
-        if(!foundUser){
-            throw new NotFoundException('User not found');
-        }
-        //await this.orderService.deleteOrdersByUserId(id);
-
-        await this.usersRepository.delete(foundUser);
-        return foundUser
-
-        
+        return await this.userRepository.updateUser(id, user);
     }
 
+    async deleteUser(id: string): Promise<Object>{
+        const user = await this.userRepository.deleteUser(id);
+        return  {message: "Usuario eliminado", user: user}
+    }
 }
