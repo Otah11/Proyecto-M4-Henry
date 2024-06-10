@@ -15,6 +15,7 @@ constructor(private readonly ordersRepository: OrdersRepository) {}
     }
 
     async getOrderById(id: string){
-        return await this.ordersRepository.getOrderById
+        return await this.ordersRepository.getOrderById(id)
     }
+
 }

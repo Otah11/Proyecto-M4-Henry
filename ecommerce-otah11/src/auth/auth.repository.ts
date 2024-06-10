@@ -34,14 +34,14 @@ export class AuthRepository {
         const newUser = this.userRepository.create({ ...user, password: hashedPassword });
         await this.userRepository.save(newUser);
 
-        const { roles, password, ...userWithoutPassword } = newUser;
+        const { role, password, ...userWithoutPassword } = newUser;
         return userWithoutPassword;
     }
 
     async signIn(credentials: LoginUserDto) {
         const user = await this.userRepository.findOne({
             where: { email: credentials.email },
-            select: ['id', 'roles', 'email', 'password']
+            select: ['id', 'role', 'email', 'password']
         });
 
         if (!user) {
@@ -56,7 +56,7 @@ export class AuthRepository {
         const userPayload = {
             id: user.id,
             email: user.email,
-            roles: user.roles
+            roles: user.role
         };
 
         const token = this.jwtService.sign(userPayload);

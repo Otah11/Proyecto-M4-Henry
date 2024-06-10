@@ -13,10 +13,11 @@ import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 @Controller('products')
 export class ProductController {
     constructor(private readonly productService: ProductsService) {}
-      @Post('seeder')
-      async seedProducts():Promise<Product[]>{
-      return await this.productService.seedProducts();       
-      }
+
+      // @Post('seeder')
+      // async seedProducts():Promise<Product[]>{
+      // return await this.productService.seedProducts();       
+      // }
 
       @Get()
       async getAllProducts(@Query('limit') limit: number = 5, @Query('page') page: number = 1,) {
@@ -24,8 +25,8 @@ export class ProductController {
       }
 
       @Get(':id')
-      async getProductsById(@Param('id',ParseUUIDPipe) id: string): Promise<Product> {
-        return await this.productService.getProductsById(id);
+      async getProductById(@Param('id',ParseUUIDPipe) id: string): Promise<Product> {
+        return await this.productService.getProductById(id);
       }
 
       @Post()

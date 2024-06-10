@@ -16,8 +16,8 @@ export class ProductsService {
         return await this.productsRepository.getAllProducts(page, limit)
     }
 
-    async getProductsById(id: string):Promise<Product>{
-        return await this.productsRepository.getProductsById(id)
+    async getProductById(id: string):Promise<Product>{
+        return await this.productsRepository.getProductById(id)
     }
 
 
@@ -25,7 +25,6 @@ export class ProductsService {
         return await this.productsRepository.createProduct(product)
 
     }
-
 
     async updateProduct(id: string, product: Partial<ProductDto>): Promise<Product> {
         return await this.productsRepository.updateProduct(id, product)

@@ -19,23 +19,23 @@ export class UsersController {
     @ApiOperation({ summary: 'Get all users', description: 'Recibe por query la pagina y el limite de items por pagina y retorna un array de users' })
     @Roles(Role.ADMIN)
     @UseGuards(AuthGuard, RolesGuard)
-    getUsers(@Query('page') page: number = 1, @Query('limit') limit: number = 5): Promise<Omit<User, 'password'>[]> {
-        return this.usersService.getUsers(page, limit);
+    async getUsers(@Query('page') page: number = 1, @Query('limit') limit: number = 5): Promise<Omit<User, 'password'>[]> {
+        return await this.usersService.getUsers(page, limit);
     }
     
     @Get(':id')
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
-    getUserById(@Param('id',ParseUUIDPipe) id: string) : Promise<Omit<User, 'password'>> {
-        return this.usersService.getUserById(id);   
+    async getUserById(@Param('id',ParseUUIDPipe) id: string) : Promise<Omit<User, 'password'>> {
+        return await this.usersService.getUserById(id);   
     }
 
     @Put (':id')
     @ApiBearerAuth()
     @ApiBody({type: Object})
     @UseGuards(AuthGuard)
-    updateUser(@Param('id',ParseUUIDPipe) id: string, @Body() user: Partial<User>): Promise<User> {
-        return this.usersService.updateUser((id), user);
+    async updateUser(@Param('id',ParseUUIDPipe) id: string, @Body() user: Partial<User>): Promise<User> {
+        return await this.usersService.updateUser((id), user);
     }
 
     @Delete(':id')

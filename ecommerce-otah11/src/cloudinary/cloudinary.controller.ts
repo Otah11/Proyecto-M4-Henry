@@ -64,7 +64,7 @@ export class CloudinaryController {
         
     }))file: Express.Multer.File
     ) {
-         await this.productsRepository.getProductsById(id);
+         await this.productsRepository.getProductById(id);
          const image = await this.cloudinaryService.uploadImage(file);
          return await this.productsRepository.updateProduct(id, {imgUrl: image.url});
     }

@@ -17,6 +17,7 @@ const config = {
     synchronize: true,
     logging: ['error'],
     //logging: true,
+    //
     //dropSchema: true,
     //entities: [User, Product, Category, Order, OrderDetail],
     

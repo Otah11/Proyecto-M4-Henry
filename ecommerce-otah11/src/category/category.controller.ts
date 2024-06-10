@@ -29,10 +29,9 @@ export class CategoryController {
 
     }
 
-    @Post('seeder')
-    async seederCategory():Promise<Category[]> {
-         
-        return await this.categoryService.seederCategory()
-    }
+    // @Post('seeder')
+    // async seederCategory():Promise<Category[]> {         
+    //     return await this.categoryService.seederCategory()
+    // }
 }
 

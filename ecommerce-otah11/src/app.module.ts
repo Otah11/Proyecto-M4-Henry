@@ -12,6 +12,7 @@ import { OrdersModule } from './orders/orders.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { JwtModule } from '@nestjs/jwt';
 import {config as dotenvConfig} from "dotenv"
+import { AutomaticSeederModule } from './automaticSeeder/automaticSeeder.module';
 
 dotenvConfig({path: '.development.env'})
 
@@ -24,7 +25,7 @@ dotenvConfig({path: '.development.env'})
     TypeOrmModule.forRootAsync({
       inject: [ConfigService], useFactory: (configService: ConfigService) => configService.get('typeorm') 
     }),
-    UserModule, ProductModule, AuthModule, CategoryModule, OrdersModule, CloudinaryModule,
+    UserModule, ProductModule, AuthModule, CategoryModule, OrdersModule, CloudinaryModule, AutomaticSeederModule,
   JwtModule.register({
     global: true, secret: process.env.JWT_SECRET, signOptions: { expiresIn: '1h' },
   }) ],

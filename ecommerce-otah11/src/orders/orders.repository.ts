@@ -40,11 +40,9 @@ export class OrdersRepository {
             totalPrice += validateProduct.price * product.quantity;
             updatedProduct.push(validateProduct);
         }
-
         
             await this.productRepository.save(updatedProduct);
         
-
         const newOrderDetail = this.orderDetailRepository.create();
         newOrderDetail.price = totalPrice;
         newOrderDetail.products = updatedProduct;
@@ -68,4 +66,5 @@ export class OrdersRepository {
     async getOrderById(id: string) {
         return await this.orderRepository.findOne({ where: { id: id }, relations: { orderDetail: true, user: true } });
     }
+
 }

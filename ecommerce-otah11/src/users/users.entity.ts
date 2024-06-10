@@ -5,11 +5,11 @@ import { Role } from '../roles/role.enum';
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 
-@Entity({name: 'users'})
+@Entity({ name: 'users' })
 export class User {
     @PrimaryGeneratedColumn('uuid')
     @ApiHideProperty()
-    id: string=uuid();
+    id: string = uuid();
 
     @Column({ length: 50 })
     @ApiProperty({
@@ -60,13 +60,13 @@ export class User {
     })
     city: string;
 
-    @Column ({default: Role.USER})
+    @Column({ default: Role.USER })
     @Exclude()
     @ApiProperty({
         description: 'El rol del Usuario',
         example: 'USER o ADMIN'
     })
-    roles: Role;
+    role: Role;
 
     @OneToMany(() => Order, order => order.user)
     orders: Order[];
