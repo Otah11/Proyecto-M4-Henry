@@ -6,8 +6,8 @@ import { CategoryRepository } from "./category.repository";
 export class CategoryService {
     constructor(private readonly categoryRepository: CategoryRepository) {}
     
-    async seederCategory():Promise<Category[]>{
-        return await this.categoryRepository.seederCategory()
+    async seedCategory():Promise<Category[]>{
+        return await this.categoryRepository.seedCategory()
     }
     async getAllCategories() {
         return await this.categoryRepository.getAllCategories()

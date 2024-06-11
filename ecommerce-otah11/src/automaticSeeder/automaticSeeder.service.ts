@@ -10,7 +10,7 @@ export class AutomaticSeederService implements OnModuleInit {
     ){}
     
     async onModuleInit() {
-        await this.categoryService.seederCategory();
+        await this.categoryService.seedCategory();
         await this.productsService.seedProducts();
     }
 }

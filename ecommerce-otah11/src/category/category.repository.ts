@@ -8,9 +8,9 @@ import { categories } from "src/utils/category";
 export class CategoryRepository {
     constructor(@InjectRepository(Category) private readonly categoryRepository: Repository<Category>) {}
     
-    async seederCategory():Promise<Category[]>{
-        const arrayOfCategories = await this.categoryRepository.find();
-        if(arrayOfCategories.length === 0){
+    async seedCategory():Promise<Category[]>{
+        const categoriesArray = await this.categoryRepository.find();
+        if(categoriesArray.length === 0){
             for (const i of categories ){
                 await this.categoryRepository.save(i);}
         }
