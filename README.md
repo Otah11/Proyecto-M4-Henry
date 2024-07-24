@@ -74,8 +74,4 @@ Contributions are welcome! If you find any issues or have any suggestions, pleas
 
 ¡Las contribuciones son bienvenidas! Si encuentras algún problema o tienes alguna sugerencia, por favor abre un issue o un pull request en el repositorio.
 
-## License / Licencia
-
-This project is licensed under the UNLICENSED license.
-
-Este proyecto está bajo la licencia UNLICENSED.
+![](https://github.com/Otah11/Proyecto-M4-Henry/blob/main/pm4-01.jpg)
